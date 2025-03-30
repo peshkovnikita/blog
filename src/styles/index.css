@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  background-color: #EBEEF3;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  text-align: center;
+}
+
+.ant-pagination-item-active {
+  border: none !important;
+}
