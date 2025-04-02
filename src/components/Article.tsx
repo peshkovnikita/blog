@@ -1,7 +1,7 @@
 import cl from '../styles/App.module.scss'
-import { format, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns'
 import { Rate } from 'antd'
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 
 const Article = ({ title, body: articleText, tagList, author, createdAt, favorited, favoritesCount }) => {
     const tags = tagList.length ?
@@ -9,8 +9,10 @@ const Article = ({ title, body: articleText, tagList, author, createdAt, favorit
         : null
 
     const formatText = (str) => {
-        if(str.length <= 299) return str
-        return `${str.slice(0, 277)}...`
+        if(str !== undefined) {
+            if(str.length <= 299) return str
+            return `${str.slice(0, 277)}...`
+        }
     }
 
     return (

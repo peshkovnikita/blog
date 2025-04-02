@@ -2,10 +2,11 @@ import cl from '../styles/App.module.scss'
 import Article from './Article.tsx'
 import { useEffect, useState } from 'react';
 
-import {getArticles} from '../services/RealWorldAPI.ts';
-import {useAppDispatch, useAppSelector} from '../hooks/redux.ts';
+import { getArticles } from '../services/RealWorldAPI.ts';
+import { useAppDispatch, useAppSelector } from '../hooks/redux.ts';
 
-import { ConfigProvider, Pagination } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { ConfigProvider, Pagination, Spin, Alert } from 'antd';
 const PaginationStyles = {
     token: {
         colorPrimary: '#FFFFFF'
@@ -27,7 +28,7 @@ const ArticlesPagination =
 
 const ArticleList = () => {
     const dispatch = useAppDispatch()
-    const { allArticles } = useAppSelector(store => store.articleReducer)
+    const { allArticles, isLoading, error } = useAppSelector(store => store.articleReducer)
     const [articlesList, setList] = useState([])
 
     useEffect(() => { dispatch(getArticles()) }, [dispatch]);
@@ -40,6 +41,8 @@ const ArticleList = () => {
 
     return(
         <ul className={cl.articleList}>
+            { isLoading ? <Spin indicator={<LoadingOutlined spin />} size='large' /> : null }
+            { error && <Alert message={error} type='error' showIcon /> }
             { articles }
             { articles ? ArticlesPagination : null  }
         </ul>
