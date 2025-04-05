@@ -1,6 +1,7 @@
-import cl from '../styles/App.module.scss';
-import {Button, ConfigProvider, Flex} from 'antd';
-import { useResponsive } from 'antd-style';
+import cl from '../styles/App.module.scss'
+import { Button, ConfigProvider, Flex } from 'antd'
+import { useResponsive } from 'antd-style'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
     const { xxl } = useResponsive();
@@ -8,7 +9,9 @@ const Header = () => {
     return(
         <header>
             <div className={cl.headerWrapper}>
-                <a href='/' className={cl.logo} >Realworld Blog</a>
+                <Link to='/' className={cl.logo}>
+                    Realworld Blog
+                </Link>
                 <div>
                     <ConfigProvider componentSize={xxl ? 'large' : 'middle'}>
                         <Flex gap='large'>

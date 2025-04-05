@@ -1,17 +1,15 @@
-import { AppDispatch } from '../store/store.ts';
-import { articleSlice } from '../store/reducers/ArticleSlice.ts';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const rootURL = 'https://blog-platform.kata.academy/api'
 
-export const getArticles = () => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(articleSlice.actions.articleFetching())
-        const response = await fetch(`${rootURL}/articles`)
-        const data = await response.json()
-        dispatch(articleSlice.actions.articleFetchingSuccess(data))
+export const fetchAllArticles = createAsyncThunk('article/fetchAll', async(_, thunkAPI) => {
+        try {
+            const response = await fetch(`${rootURL}/articles`)
+            if(!response.ok) throw new Error('Network Error')
+            return await response.json()
+        }
+        catch(e) {
+            return thunkAPI.rejectWithValue(e.message);
+        }
     }
-    catch (e) {
-        dispatch(articleSlice.actions.articleFetchingError(e.message))
-    }
-
-}
+)

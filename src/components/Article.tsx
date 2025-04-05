@@ -1,33 +1,33 @@
 import cl from '../styles/App.module.scss'
+import { Link } from 'react-router-dom'
 import { format, parseISO } from 'date-fns'
+
 import { Rate } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 
-const Article = ({ title, body: articleText, tagList, author, createdAt, favorited, favoritesCount }) => {
+const Article = ({ slug, title, description, tagList, author, createdAt, favorited, favoritesCount }) => {
+
     const tags = tagList.length ?
         tagList.map((tag, index) => <li key={index}>{tag[index]}</li>)
         : null
-
-    const formatText = (str) => {
-        if(str !== undefined) {
-            if(str.length <= 299) return str
-            return `${str.slice(0, 277)}...`
-        }
-    }
 
     return (
             <li className={cl.articleItem}>
                 <div className={cl.articleData}>
                     <div className={cl.articleTitle}>
-                        <h3>{title}</h3>
+                        <Link to={`/articles/${slug}`}>
+                            <h3>{title}</h3>
+                        </Link>
                         <Rate character={ favorited ?
                             <HeartFilled style={{ color: '#FF0707' }}/> :
                             <HeartOutlined style={{ color: '#404040' }} />
                         } style={{ marginRight: '6px', alignContent: 'center' }} count={1} />
                         <span>{ favoritesCount }</span>
                     </div>
-                    <ul className={cl.tagList}>{ tags }</ul>
-                    <p>{ formatText(articleText) }</p>
+                    <ul className={cl.tagList}>
+                        { tags }
+                    </ul>
+                    <p>{ description }</p>
                 </div>
                 <div className={cl.authorInfo}>
                     <div>

@@ -1,16 +1,18 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import logger from 'redux-logger'
+//import logger from 'redux-logger'
 import articleReducer from './reducers/ArticleSlice.ts'
+import { articleAPI } from '../services/articleService.ts'
 
 const rootReducer = combineReducers({
-    articleReducer
+    articleReducer,
+    [articleAPI.reducerPath]: articleAPI.reducer
 })
 
 export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat(logger),
+            getDefaultMiddleware().concat(articleAPI.middleware),
         devTools: true
     })
 }

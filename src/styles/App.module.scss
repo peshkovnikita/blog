@@ -1,6 +1,7 @@
 header {
     height: 80px;
-    padding: 16px 22px;
+    padding: 16px 48px;
+    margin-bottom: 26px;
     display: grid;
     align-items: center;
     background-color: #ffffff;
@@ -24,7 +25,18 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 26px;
+    padding-bottom: 26px;
+}
+
+.article-page {
+    display: flex;
+    justify-content: space-between;
+    width: 938px;
+    height: fit-content;
+    margin: 0 auto 26px auto;
+    padding: 24px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
 }
 
 .article-item {
@@ -37,90 +49,90 @@ header {
     background-color: #ffffff;
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+}
 
-    .article-data,
-    .author-info {
+.article-data {
+    display: flex;
+    flex-direction: column;
+    width: 682px;
+    .article-title {
         display: flex;
-    }
-
-    .article-data {
-        display: flex;
-        flex-direction: column;
-        width: 682px;
-        .article-title {
-            display: flex;
-            align-content: center;
-            height: 28px;
-            margin-bottom: 4px;
-            h3 {
-                margin-right: 12px;
-                font-size: 20px;
-                font-weight: 400;
-                line-height: 28px;
-                color: #1890FF;
-            }
-            span {
-                color: #404040;
-                line-height: 28px;
-                text-align: center;
-                vertical-align: bottom;
-            }
-        }
-
-        .tag-list {
-            display: flex;
-            font-size: 12px;
-            li {
-                margin-right: 8px;
-                padding: 0 4px;
-                color: #808080;
-                border: 1px solid #808080;
-                border-radius: 2px;
-            }
-
-            li:first-of-type {
-                color: #404040;
-            }
-
-            li:last-of-type {
-                margin-right: 0;
-            }
-        }
-
-        p {
-            color: #404040;
-            font-size: 12px;
-            line-height: 22px;
-            text-align: left;
-            overflow-wrap: break-word;
-        }
-    }
-
-    .author-info {
-        height: 46px;
-
-        div {
+        align-content: center;
+        height: 28px;
+        margin-bottom: 4px;
+        h3 {
             margin-right: 12px;
-            .username {
-                display: block;
-                font-size: 18px;
-                line-height: 28px;
-            }
-            .date {
-                color: #808080;
-                font-size: 12px;
-                line-height: 22px;
-            }
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 28px;
+            color: #1890FF;
+        }
+        span {
+            color: #404040;
+            line-height: 28px;
+            text-align: center;
+            vertical-align: bottom;
+        }
+    }
+
+    .tag-list {
+        display: flex;
+        font-size: 12px;
+        li {
+            margin-right: 8px;
+            padding: 0 4px;
+            color: #808080;
+            border: 1px solid #808080;
+            border-radius: 2px;
         }
 
-        img {
-            height: 46px;
-            width: 46px;
-            border-radius: 50%;
-            object-fit: cover;
+        li:first-of-type {
+            color: #404040;
         }
+
+        li:last-of-type {
+            margin-right: 0;
+        }
+    }
+
+    p {
+        color: #404040;
+        font-size: 12px;
+        line-height: 22px;
+        text-align: left;
+        overflow-wrap: break-word;
     }
 }
 
+.article-body {
+    margin-top: 24px;
+    text-align: left;
+}
+
+.author-info {
+    display: flex;
+    height: 46px;
+
+    div {
+        margin-right: 12px;
+        .username {
+            display: block;
+            font-size: 18px;
+            line-height: 28px;
+        }
+        .date {
+            color: #808080;
+            font-size: 12px;
+            line-height: 22px;
+        }
+    }
+
+    img {
+        height: 46px;
+        width: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+}
 
 

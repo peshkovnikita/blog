@@ -1,13 +1,15 @@
 import cl from '../styles/App.module.scss'
 import Article from './Article.tsx'
-import { useEffect, useState } from 'react';
+import { useState } from 'react'
 
-import { getArticles } from '../services/RealWorldAPI.ts';
-import { useAppDispatch, useAppSelector } from '../hooks/redux.ts';
+import { fetchAllArticles } from '../services/RealWorldAPI.ts'
+import { useAppDispatch, useAppSelector } from '../hooks/redux.ts'
 
-import { LoadingOutlined } from '@ant-design/icons';
-import { ConfigProvider, Pagination, Spin, Alert } from 'antd';
-const PaginationStyles = {
+import type { PaginationProps } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons'
+import { ConfigProvider, Pagination, Spin, Alert } from 'antd'
+import { articleAPI } from '../services/articleService.ts'
+const paginationStyles = {
     token: {
         colorPrimary: '#FFFFFF'
     },
@@ -21,30 +23,37 @@ const PaginationStyles = {
     }
 }
 
-const ArticlesPagination =
-    <ConfigProvider theme={ PaginationStyles }>
-        <Pagination align='center' defaultCurrent={1} total={50} />
-    </ConfigProvider>
-
 const ArticleList = () => {
-    const dispatch = useAppDispatch()
-    const { allArticles, isLoading, error } = useAppSelector(store => store.articleReducer)
-    const [articlesList, setList] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const limit = 5
+    const offset = (currentPage - 1) * limit;
 
-    useEffect(() => { dispatch(getArticles()) }, [dispatch]);
+    const { data, isLoading, isError } = articleAPI.useFetchAllArticlesQuery({ limit, offset })
 
-    useEffect(() => { setList(allArticles) }, [allArticles]);
+    const allArticles = data?.articles.map((article) => (
+        <Article key={article.slug} {...article} />
+    ));
 
-    const articles = allArticles.length ?
-        articlesList.map(article => <Article key={article.createdAt} {...article}/> )
-        : null
+    const onChange: PaginationProps['onChange'] = (page) => {
+        setCurrentPage(page)
+    };
 
     return(
         <ul className={cl.articleList}>
-            { isLoading ? <Spin indicator={<LoadingOutlined spin />} size='large' /> : null }
-            { error && <Alert message={error} type='error' showIcon /> }
-            { articles }
-            { articles ? ArticlesPagination : null  }
+            { isLoading && <Spin indicator={<LoadingOutlined spin />} size='large' /> }
+            { isError && <Alert message='Network Error' type='error' showIcon /> }
+            { allArticles }
+            { allArticles &&
+                <ConfigProvider theme={ paginationStyles }>
+                    <Pagination align='center'
+                                defaultPageSize={limit}
+                                current={currentPage}
+                                onChange={onChange}
+                                total={data?.articlesCount}
+                                showSizeChanger={false}
+                    />
+                </ConfigProvider>
+            }
         </ul>
     )
 }
