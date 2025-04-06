@@ -15,8 +15,12 @@ const Header = () => {
                 <div>
                     <ConfigProvider componentSize={xxl ? 'large' : 'middle'}>
                         <Flex gap='large'>
-                            <Button type='small'>Sign In</Button>
-                            <Button variant='outlined' color='green'>Sign Up</Button>
+                            <Link to="/sign-in">
+                                <Button type='small'>Sign In</Button>
+                            </Link>
+                            <Link to='/sign-up'>
+                                <Button variant='outlined' color='green'>Sign Up</Button>
+                            </Link>
                         </Flex>
                     </ConfigProvider>
                 </div>

@@ -8,7 +8,7 @@ import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 const Article = ({ slug, title, description, tagList, author, createdAt, favorited, favoritesCount }) => {
 
     const tags = tagList.length ?
-        tagList.map((tag, index) => <li key={index}>{tag[index]}</li>)
+        tagList.map((tag, index) => <li key={index}>{tag}</li>)
         : null
 
     return (
@@ -18,7 +18,7 @@ const Article = ({ slug, title, description, tagList, author, createdAt, favorit
                         <Link to={`/articles/${slug}`}>
                             <h3>{title}</h3>
                         </Link>
-                        <Rate character={ favorited ?
+                        <Rate disabled character={ favorited ?
                             <HeartFilled style={{ color: '#FF0707' }}/> :
                             <HeartOutlined style={{ color: '#404040' }} />
                         } style={{ marginRight: '6px', alignContent: 'center' }} count={1} />
@@ -27,7 +27,9 @@ const Article = ({ slug, title, description, tagList, author, createdAt, favorit
                     <ul className={cl.tagList}>
                         { tags }
                     </ul>
-                    <p>{ description }</p>
+                    <p className={cl.articleDescription}>
+                        { description }
+                    </p>
                 </div>
                 <div className={cl.authorInfo}>
                     <div>

@@ -1,9 +1,10 @@
-import { useParams } from 'react-router'
 import cl from "../styles/App.module.scss"
 import { Rate } from "antd"
 import { HeartFilled, HeartOutlined } from "@ant-design/icons"
-import { format, parseISO } from "date-fns"
+
 import { articleAPI } from "../services/articleService.ts"
+import { useParams } from 'react-router'
+import { format, parseISO } from "date-fns"
 import ReactMarkdown from 'react-markdown';
 
 const ArticlePage = () => {
@@ -12,7 +13,7 @@ const ArticlePage = () => {
     const { data } = articleAPI.useGetArticleQuery(slug)
 
     if(data) {
-        const { title, body, description, tagList, author, createdAt, favorited, favoritesCount } = data.article
+        const { title, body, description, tagList, author, createdAt, favorited, favoritesCount } = data?.article
 
         const tags = tagList.length ?
             tagList.map((tag, index) => <li key={index}>{tag[index]}</li>)
@@ -23,14 +24,16 @@ const ArticlePage = () => {
                 <div className={cl.articleData}>
                     <div className={cl.articleTitle}>
                         <h3>{title}</h3>
-                        <Rate character={ favorited ?
+                        <Rate disabled character={ favorited ?
                             <HeartFilled style={{ color: '#FF0707' }}/> :
                             <HeartOutlined style={{ color: '#404040' }} />
                         } style={{ marginRight: '6px', alignContent: 'center' }} count={1} />
                         <span>{ favoritesCount }</span>
                     </div>
                     <ul className={cl.tagList}>{ tags }</ul>
-                    <p>{ description }</p>
+                    <p className={cl.articleDescription}>
+                        { description }
+                    </p>
                     <div className={cl.articleBody}>
                         <ReactMarkdown>{body}</ReactMarkdown>
                     </div>
