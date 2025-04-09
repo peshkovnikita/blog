@@ -8,6 +8,10 @@
   margin: 0 auto;
 }
 
+img {
+  object-fit: cover;
+}
+
 a {
   cursor: pointer;
   text-decoration: none;

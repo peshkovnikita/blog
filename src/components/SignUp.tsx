@@ -1,8 +1,11 @@
 import cl from '../styles/SignUp.module.scss'
-import { Link } from 'react-router-dom'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import {Link, useNavigate} from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useAppDispatch } from '../hooks/redux.ts'
+
 import { userAPI } from '../services/userService.ts'
-import {IUser} from "../models/IUser.ts";
+import {setToken, setUserData} from '../store/reducers/AuthSlice.ts'
+import {useEffect} from "react";
 
 type FieldType = {
     username: string
@@ -19,14 +22,20 @@ const SignUp = () => {
         }
     })
 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZjI5ODI0YzVjZDM2MWIwMDkxMDQwNCIsInVzZXJuYW1lIjoiZ2hnaGdoZyIsImV4cCI6MTc0OTEzNTkwOCwiaWF0IjoxNzQzOTUxOTA4fQ.mdCCRpEO_ICy6OBZFhgVXd2htnSwqauqP_oIFpZ_sQU'
+    const navigate = useNavigate()
 
-    const [ createUser, {} ] = userAPI.useCreateUserMutation()
+    const dispatch = useAppDispatch()
+    const [ createUser ] = userAPI.useCreateUserMutation()
 
-    const onSubmit: SubmitHandler<FieldType> = async ({ username, password, email }) => {
-        const response = await createUser({
-            user: { username, password, email }
-        })
+    const onSubmit = async (formData: { username: string, password: string, email: string }) => {
+       try {
+           const response = await createUser({ user: formData }).unwrap()
+           const token = response.user.token
+           dispatch(setToken(token))
+           navigate('/articles')
+       } catch (err) {
+           console.error('Registration failed:', err)
+       }
     }
 
     const password = watch('password')

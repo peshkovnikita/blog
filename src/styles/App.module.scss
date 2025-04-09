@@ -19,6 +19,24 @@ header {
     .logo:visited {
         color: inherit;
     }
+
+    .profile-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-wrapper img{
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+    }
+
+    .profile-wrapper .username{
+        font-size: 18px;
+        color: #262626;
+        margin-right: 12px;
+    }
+
 }
 
 .article-list {
@@ -134,7 +152,6 @@ header {
         height: 46px;
         width: 46px;
         border-radius: 50%;
-        object-fit: cover;
     }
 }
 
