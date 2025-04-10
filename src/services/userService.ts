@@ -5,8 +5,8 @@ export const userAPI = createApi({
     reducerPath: 'userAPI',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://blog-platform.kata.academy/api',
-        prepareHeaders: (headers, { getState }) => {
-            const token = (getState()).auth.token
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem('token')
             if (token) headers.set('Authorization', `Token ${token}`)
             return headers
         },

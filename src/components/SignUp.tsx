@@ -1,11 +1,10 @@
 import cl from '../styles/SignUp.module.scss'
-import {Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useAppDispatch } from '../hooks/redux.ts'
 
 import { userAPI } from '../services/userService.ts'
-import {setToken, setUserData} from '../store/reducers/AuthSlice.ts'
-import {useEffect} from "react";
+import { loginSuccess } from '../store/reducers/AuthSlice.ts'
 
 type FieldType = {
     username: string
@@ -31,7 +30,7 @@ const SignUp = () => {
        try {
            const response = await createUser({ user: formData }).unwrap()
            const token = response.user.token
-           dispatch(setToken(token))
+           dispatch(loginSuccess(token))
            navigate('/articles')
        } catch (err) {
            console.error('Registration failed:', err)

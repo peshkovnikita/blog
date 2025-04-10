@@ -1,25 +1,27 @@
 import cl from '../styles/App.module.scss'
-import { Button, ConfigProvider, Flex } from 'antd'
-import { useResponsive } from 'antd-style'
-import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
-import { setUserData } from '../store/reducers/AuthSlice.ts'
+import {Button, ConfigProvider, Flex} from 'antd'
+import {useResponsive} from 'antd-style'
+import {Link} from 'react-router-dom'
+import {useEffect} from 'react'
 
-import { userAPI } from '../services/userService.ts'
-import { useAppDispatch, useAppSelector } from '../hooks/redux.ts'
+import {logout, setUserData} from '../store/reducers/AuthSlice.ts'
+import {userAPI} from '../services/userService.ts'
+import {useAppDispatch, useAppSelector} from '../hooks/redux.ts'
+import {skipToken} from '@reduxjs/toolkit/query'
 
 const Header = () => {
     const { xxl } = useResponsive();
 
     const dispatch = useAppDispatch()
+
     const { token, username, image } = useAppSelector((state) => state.auth)
-    const { data } = userAPI.useGetUserQuery(token)
+    const { data } = userAPI.useGetUserQuery(token ? token : skipToken)
 
     useEffect(() => {
-        if(data) {
-            dispatch(setUserData(data.user))
-        }
+        if(data) dispatch(setUserData(data.user))
     }, [data]);
+
+    const onLogout = () => dispatch(logout())
 
     return(
         <header>
@@ -41,7 +43,7 @@ const Header = () => {
                                     </div>
                                 </Link>
                                 <Link to='/' >
-                                    <Button type='small' variant='outlined' color='default'>
+                                    <Button type='small' variant='outlined' color='default' onClick={onLogout}>
                                         Log Out
                                     </Button>
                                 </Link>

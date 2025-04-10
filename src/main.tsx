@@ -8,6 +8,8 @@ import { BrowserRouter } from 'react-router-dom';
 
 const store = setupStore()
 
+console.log(store.getState())
+
 createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
         <Provider store={store}>

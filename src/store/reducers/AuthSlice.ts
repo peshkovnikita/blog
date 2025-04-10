@@ -22,7 +22,11 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setToken: (state: AuthState, action: PayloadAction<string>) => {
+        loginSuccess: (state: AuthState, action: PayloadAction<string>) => {
+            state.token = action.payload
+            localStorage.setItem('token', action.payload);
+        },
+        setTokenFromStorage: (state: AuthState, action: PayloadAction<string>) => {
             state.token = action.payload
         },
         setUserData: (state: AuthState, action: PayloadAction<AuthState>) => {
@@ -30,11 +34,15 @@ const authSlice = createSlice({
             state.email = action.payload.email
             state.image = action.payload.image ?? imgPlug
         },
-        logOut: (state: AuthState) => {
+        logout: (state: AuthState) => {
             state.token = null
+            state.username = null
+            state.email = null
+            state.image = null
+            localStorage.removeItem('token')
         }
     },
 })
 
-export const { setToken, setUserData, logout } = authSlice.actions
+export const { loginSuccess, setTokenFromStorage, setUserData, logout } = authSlice.actions
 export default authSlice.reducer
