@@ -1,62 +1,27 @@
-import { IArticle } from '../../models/IArticle.ts';
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchAllArticles } from '../../services/RealWorldAPI.ts';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IArticlesState {
-    allArticles: IArticle[];
-    articlesCount: number;
-    isLoading: boolean;
-    error: null | string;
-}
-
-interface IAction {
-    type: string;
-    payload?: any;
+    currentPage: number
+    articlesCount: number
 }
 
 const initialState: IArticlesState = {
-    allArticles: [],
-    articlesCount: 0,
-    isLoading: false,
-    error: null,
+    currentPage: 1,
+    articlesCount: 0
 }
 
 export const articleSlice = createSlice({
     name: 'article',
     initialState,
     reducers: {
-        articleFetching(state) {
-            state.isLoading = true;
+        setCurrentPage(state: IArticlesState, action: PayloadAction<number>) {
+            state.currentPage = action.payload;
         },
-        articleFetchingSuccess(state, action) {
-            const { articles,  articlesCount } = action.payload
-            state.allArticles = articles;
-            state.articlesCount = articlesCount;
-            state.isLoading = false;
-            state.error = '';
-        },
-        articleFetchingError(state, action) {
-            state.isLoading = false;
-            state.eError = action.payload;
+        setArticlesCount(state: IArticlesState, action: PayloadAction<number>) {
+            state.articlesCount = action.payload;
         }
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchAllArticles.pending, (state:IArticlesState) => {
-                state.isLoading = true;
-            })
-            .addCase(fetchAllArticles.fulfilled, (state:IArticlesState, action:IAction) => {
-                const { articles,  articlesCount } = action.payload
-                state.allArticles = articles;
-                state.articlesCount = articlesCount;
-                state.isLoading = false;
-                state.error = '';
-            })
-            .addCase(fetchAllArticles.rejected, (state:IArticlesState, action:IAction) => {
-                state.isLoading = false;
-                state.error = action.payload as string;
-            });
     },
 })
 
+export const { setCurrentPage, setArticlesCount } = articleSlice.actions
 export default articleSlice.reducer

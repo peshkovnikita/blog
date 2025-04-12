@@ -5,7 +5,6 @@ const imgPlug = 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-f
 interface AuthState {
     token: string | null,
     username: string | null,
-    bio: string | null,
     email: string | null,
     image: string | null,
 }
@@ -13,7 +12,6 @@ interface AuthState {
 const initialState: AuthState = {
     token: null,
     username: null,
-    bio: null,
     email: null,
     image: null,
 }
@@ -31,7 +29,6 @@ const authSlice = createSlice({
             state.username = action.payload.username
             state.email = action.payload.email
             state.image = action.payload.image ?? imgPlug
-            state.bio = action.payload.bio ?? ''
             localStorage.setItem('token', action.payload.token);
         },
         setTokenFromStorage: (state: AuthState, action: PayloadAction<string>) => {
@@ -41,14 +38,12 @@ const authSlice = createSlice({
             state.username = action.payload.username
             state.email = action.payload.email
             state.image = action.payload.image ?? imgPlug
-            state.bio = action.payload.bio ?? ''
         },
         logout: (state: AuthState) => {
             state.token = null
             state.username = null
             state.email = null
             state.image = null
-            state.bio = null
             localStorage.removeItem('token')
         }
     },

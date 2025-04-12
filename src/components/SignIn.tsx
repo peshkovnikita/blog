@@ -1,4 +1,4 @@
-import cl from '../styles/SignUp.module.scss'
+import cl from '../styles/Form.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,11 +28,11 @@ const SignIn = () => {
     const dispatch = useAppDispatch()
     const [ loginUser ] = userAPI.useLoginUserMutation()
 
-    const onLogin = async (formData: { email: string, password: string }) => {
+    const onLogin = async (formData: FormTypes) => {
         try {
             const response = await loginUser({user: {...formData}}).unwrap()
             dispatch(loginSuccess(response.user))
-            navigate('/articles')
+            navigate('/')
         }
         catch (error) {
             if(error.status === 422) {

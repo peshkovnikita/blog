@@ -16,7 +16,7 @@ const ArticlePage = () => {
         const { title, body, description, tagList, author, createdAt, favorited, favoritesCount } = data?.article
 
         const tags = tagList.length ?
-            tagList.map((tag, index) => <li key={index}>{tag[index]}</li>)
+            tagList.map((tag, index) => <li key={index}>{tag}</li>)
             : null
 
         return(

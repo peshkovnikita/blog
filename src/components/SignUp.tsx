@@ -1,4 +1,4 @@
-import cl from '../styles/SignUp.module.scss'
+import cl from '../styles/Form.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useAppDispatch } from '../hooks/redux.ts'
@@ -37,12 +37,12 @@ const SignUp = () => {
     const dispatch = useAppDispatch()
     const [ createUser ] = userAPI.useCreateUserMutation()
 
-    const onSubmit = async (formData: { username: string, password: string, email: string }) => {
+    const onSubmit = async (formData: FormTypes) => {
        try {
            const response = await createUser({ user: formData }).unwrap()
            const token = response.user.token
            dispatch(signupSuccess(token))
-           navigate('/articles')
+           navigate('/')
        } catch (error) {
            if (error.status === 422) {
                for (const key in error.data.errors) {

@@ -36,7 +36,7 @@ const Header = () => {
                                 <Link to="/">
                                     <Button variant='outlined' color='green'>Create article</Button>
                                 </Link>
-                                <Link to='/'>
+                                <Link to='/profile'>
                                     <div className={cl.profileWrapper}>
                                         <span className={cl.username}>{username}</span>
                                         <img src={image} alt='avatar'/>
