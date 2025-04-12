@@ -19,6 +19,13 @@ export const userAPI = createApi({
                 body: user
             }),
         }),
+        loginUser: build.mutation({
+            query: (user) => ({
+                url: '/users/login',
+                method: 'POST',
+                body: user
+            }),
+        }),
         getUser: build.query({
             query: () => '/user',
         })

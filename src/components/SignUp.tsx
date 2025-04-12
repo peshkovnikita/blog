@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod'
 
 import { userAPI } from '../services/userService.ts'
-import { loginSuccess } from '../store/reducers/AuthSlice.ts'
+import { signupSuccess } from '../store/reducers/AuthSlice.ts'
 
 const schema = z.object({
     username: z.string().min(3).max(20)
@@ -20,7 +20,7 @@ const schema = z.object({
 }).refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
     message: 'Passwords must match',
-});
+})
 
 type FormTypes = z.infer<typeof schema>;
 
@@ -41,7 +41,7 @@ const SignUp = () => {
        try {
            const response = await createUser({ user: formData }).unwrap()
            const token = response.user.token
-           dispatch(loginSuccess(token))
+           dispatch(signupSuccess(token))
            navigate('/articles')
        } catch (error) {
            if (error.status === 422) {

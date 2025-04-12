@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Header from'./components/Header.tsx'
@@ -6,7 +7,6 @@ import ArticlePage from './components/ArticlePage.tsx'
 import SignUp from './components/SignUp.tsx'
 import SignIn from './components/SignIn.tsx'
 import { useAppDispatch } from './hooks/redux.ts'
-import { useEffect, useLayoutEffect } from 'react'
 import { setTokenFromStorage } from './store/reducers/AuthSlice.ts'
 
 function App() {

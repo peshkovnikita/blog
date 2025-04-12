@@ -1,13 +1,13 @@
 import cl from '../styles/App.module.scss'
-import {Button, ConfigProvider, Flex} from 'antd'
-import {useResponsive} from 'antd-style'
-import {Link} from 'react-router-dom'
-import {useEffect} from 'react'
+import { Button, ConfigProvider, Flex } from 'antd'
+import { useResponsive } from 'antd-style'
+import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
-import {logout, setUserData} from '../store/reducers/AuthSlice.ts'
-import {userAPI} from '../services/userService.ts'
-import {useAppDispatch, useAppSelector} from '../hooks/redux.ts'
-import {skipToken} from '@reduxjs/toolkit/query'
+import { logout, setUserData } from '../store/reducers/AuthSlice.ts'
+import { userAPI } from '../services/userService.ts'
+import { useAppDispatch, useAppSelector} from '../hooks/redux.ts'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 const Header = () => {
     const { xxl } = useResponsive();

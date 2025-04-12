@@ -2,9 +2,6 @@ import cl from '../styles/App.module.scss'
 import Article from './Article.tsx'
 import { useState } from 'react'
 
-import { fetchAllArticles } from '../services/RealWorldAPI.ts'
-import { useAppDispatch, useAppSelector } from '../hooks/redux.ts'
-
 import type { PaginationProps } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons'
 import { ConfigProvider, Pagination, Spin, Alert } from 'antd'
