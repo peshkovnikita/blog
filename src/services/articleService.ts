@@ -2,7 +2,14 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const articleAPI = createApi({
     reducerPath: 'articleAPI',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://blog-platform.kata.academy/api' }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'https://blog-platform.kata.academy/api',
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem('token')
+            if (token) headers.set('Authorization', `Token ${token}`)
+            return headers
+        },
+    }),
     endpoints: (build) => ({
         fetchAllArticles: build.query<any, { limit: number, offset: number }>({
             query: ({ limit, offset }) => ({
