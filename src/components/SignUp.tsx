@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod'
 
 import { userAPI } from '../services/userService.ts'
-import { signupSuccess } from '../store/reducers/AuthSlice.ts'
+import { setUserData } from '../store/reducers/AuthSlice.ts'
 
 const schema = z.object({
     username: z.string().min(3).max(20)
@@ -40,8 +40,7 @@ const SignUp = () => {
     const onSubmit = async (formData: FormTypes) => {
        try {
            const response = await createUser({ user: formData }).unwrap()
-           const token = response.user.token
-           dispatch(signupSuccess(token))
+           dispatch(setUserData(response.user))
            navigate('/')
        } catch (error) {
            if (error.status === 422) {
@@ -50,7 +49,7 @@ const SignUp = () => {
                        setError(key, {
                            type: 'server',
                            message: `${key[0].toUpperCase() + key.slice(1, key.length)} ${error.data.errors[key].slice(0, -1)}`,
-                       });
+                       })
                    }
                }
                return;

@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 import { useAppDispatch } from '../hooks/redux.ts'
 import { userAPI } from '../services/userService.ts'
-import { loginSuccess } from '../store/reducers/AuthSlice.ts'
+import { setUserData } from '../store/reducers/AuthSlice.ts'
 
 const schema = z.object({
     email: z.string().email(),
@@ -31,19 +31,19 @@ const SignIn = () => {
     const onLogin = async (formData: FormTypes) => {
         try {
             const response = await loginUser({user: {...formData}}).unwrap()
-            dispatch(loginSuccess(response.user))
+            dispatch(setUserData(response.user))
             navigate('/')
         }
         catch (error) {
             if(error.status === 422) {
-                setError('email', {
-                    type: 'server',
-                    message: `Email or password ${error.data.errors['email or password']}`,
-                });
                 setError('password', {
                     type: 'server',
                     message: `Email or password ${error.data.errors['email or password']}`,
-                });
+                })
+                setError('email', {
+                    type: 'server',
+                    message: `Email or password ${error.data.errors['email or password']}`,
+                })
             }
         }
     }

@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 import { logout, setUserData } from '../store/reducers/AuthSlice.ts'
 import { userAPI } from '../services/userService.ts'
-import { useAppDispatch, useAppSelector} from '../hooks/redux.ts'
+import { useAppDispatch, useAppSelector } from '../hooks/redux.ts'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 const Header = () => {

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-const imgPlug = 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png'
+export const imgPlug = 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png'
 
 interface AuthState {
     token: string | null,
@@ -20,11 +20,8 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        signupSuccess: (state: AuthState, action: PayloadAction<string>) => {
-            state.token = action.payload
-            localStorage.setItem('token', action.payload);
-        },
-        loginSuccess: (state: AuthState, action: PayloadAction<AuthState>) => {
+        setUserData: (state: AuthState, action: PayloadAction<AuthState>) => {
+            console.log(state)
             state.token = action.payload.token
             state.username = action.payload.username
             state.email = action.payload.email
@@ -33,11 +30,6 @@ const authSlice = createSlice({
         },
         setTokenFromStorage: (state: AuthState, action: PayloadAction<string>) => {
             state.token = action.payload
-        },
-        setUserData: (state: AuthState, action: PayloadAction<AuthState>) => {
-            state.username = action.payload.username
-            state.email = action.payload.email
-            state.image = action.payload.image ?? imgPlug
         },
         logout: (state: AuthState) => {
             state.token = null
@@ -49,5 +41,5 @@ const authSlice = createSlice({
     },
 })
 
-export const { signupSuccess, loginSuccess, setTokenFromStorage, setUserData, logout } = authSlice.actions
+export const { setUserData, setTokenFromStorage, logout } = authSlice.actions
 export default authSlice.reducer

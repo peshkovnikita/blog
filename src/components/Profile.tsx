@@ -3,27 +3,72 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import { useAppSelector } from '../hooks/redux.ts'
+import { userAPI } from '../services/userService.ts'
+import { useAppDispatch, useAppSelector } from '../hooks/redux.ts'
+import { useEffect } from 'react'
+import { imgPlug, setUserData } from '../store/reducers/AuthSlice.ts'
 
 const schema = z.object({
     username: z.string().min(3).max(20)
-        .regex(/^[a-zA-Z0-9]+$/, 'Disallowed symbols'),
-    email: z.string().email(),
-    newPassword: z.string().min(6).max(40),
-    image: z.string(),
+        .regex(/^[a-zA-Z0-9]+$/, 'Disallowed symbols').optional(),
+    email: z.string().email().optional(),
+    password: z.string().optional()
+        .refine(val => !val || val.length >= 6, {
+            message: 'Password must be at least 6 characters',
+        }),
+    image: z.string()
+        .optional()
+        .refine(val => !val || /^https?:\/\/.+\.(jpeg|jpg|gif|png|webp|svg)$/i.test(val), {
+            message: 'Must be a valid image URL',
+        }),
 })
 
 type FormTypes = z.infer<typeof schema>
 
 const Profile = () => {
-    const { username, email, image } = useAppSelector((state) => state.auth)
-
-    const { register, handleSubmit, setError, formState: { errors }} = useForm<FormTypes>({
+    const { register, handleSubmit, setValue, setError, formState: { errors } } = useForm<FormTypes>({
         resolver: zodResolver(schema),
     })
 
+    const dispatch = useAppDispatch()
+    const { username, email, image } = useAppSelector((state) => state.auth)
+    const [ updateUser ] = userAPI.useUpdateUserMutation()
+
+    useEffect(() => {
+        setValue('username', username)
+        setValue('email', email)
+        if(image === imgPlug) setValue('image', '')
+        else setValue('image', image)
+    }, [username, email, image])
+
     const onSubmit = async (formData: FormTypes) => {
-        console.log({ user: formData })
+        const changedData = {image: null}
+        for (const key in formData) {
+            if(formData[key] && formData[key] !== username && formData[key] !== email && formData[key] !== image) {
+                changedData[key] = formData[key]
+            }
+        }
+
+        if(Object.keys(changedData).length === 0) return;
+
+        try{
+            const response = await updateUser({ user: changedData }).unwrap()
+            dispatch(setUserData(response.user))
+            setValue('password', '')
+        }
+        catch (error) {
+            if(error.status === 422) {
+                for (const key in error.data.errors) {
+                    if (key in error.data.errors) {
+                        setError(key, {
+                            type: 'server',
+                            message: `${key[0].toUpperCase() + key.slice(1, key.length)} ${error.data.errors[key].slice(0, -1)}`,
+                        })
+                    }
+                }
+            }
+        }
+
     }
 
     return (
@@ -34,7 +79,6 @@ const Profile = () => {
                 <div className={cl.formItem}>
                     <label className={cl.label}>Username</label>
                     <input
-                        defaultValue={username}
                         type='text'
                         placeholder='Username'
                         className={`${cl.input} ${errors.username ? cl.inputError : ''}`}
@@ -46,7 +90,6 @@ const Profile = () => {
                 <div className={cl.formItem}>
                     <label className={cl.label}>Email address</label>
                     <input
-                        defaultValue={email}
                         type='email'
                         placeholder='Email address'
                         className={`${cl.input} ${errors.email ? cl.inputError : ''}`}
@@ -58,22 +101,21 @@ const Profile = () => {
                 <div className={cl.formItem}>
                     <label className={cl.label}>New password</label>
                     <input
-                        type='newPassword'
+                        type='password'
                         placeholder='New password'
-                        className={`${cl.input} ${errors.newPassword ? cl.inputError : ''}`}
-                        {...register('newPassword')}
+                        className={`${cl.input} ${errors.password ? cl.inputError : ''}`}
+                        {...register('password')}
                     />
-                    { errors.newPassword && <p className={cl.error}>{errors.newPassword.message}</p> }
+                    { errors.password && <p className={cl.error}>{errors.password.message}</p> }
                 </div>
 
                 <div className={cl.formItem}>
                     <label className={cl.label}>Avatar image (url)</label>
                     <input
-                        defaultValue={image}
                         type='text'
                         placeholder='Avatar image'
                         className={`${cl.input} ${errors.image ? cl.inputError : ''}`}
-                        {...register('password')}
+                        {...register('image')}
                     />
                     { errors.image && <p className={cl.error}>{errors.image.message}</p> }
                 </div>

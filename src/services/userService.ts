@@ -1,4 +1,4 @@
-import {BaseQueryArg, createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { IUser, IUserResponse } from '../models/IUser.ts'
 
 export const userAPI = createApi({
@@ -23,6 +23,13 @@ export const userAPI = createApi({
             query: (user) => ({
                 url: '/users/login',
                 method: 'POST',
+                body: user
+            }),
+        }),
+        updateUser: build.mutation({
+            query: (user) => ({
+                url: '/user',
+                method: 'PUT',
                 body: user
             }),
         }),
