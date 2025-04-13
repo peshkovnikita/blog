@@ -49,7 +49,7 @@ const SignIn = () => {
     }
 
     return (
-        <div className={cl.signupContainer}>
+        <div className={cl.formContainer}>
             <h3 className={cl.title}>Sign In</h3>
 
             <form onSubmit={handleSubmit(onLogin)}>

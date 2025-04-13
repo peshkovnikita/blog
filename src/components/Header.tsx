@@ -33,7 +33,7 @@ const Header = () => {
                     { username ?
                         <ConfigProvider componentSize={xxl ? 'large' : 'middle'} >
                             <Flex gap='large' style={{ display: 'flex', alignItems: 'center' }}>
-                                <Link to="/">
+                                <Link to='/new-article'>
                                     <Button variant='outlined' color='green'>Create article</Button>
                                 </Link>
                                 <Link to='/profile'>

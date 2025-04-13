@@ -2,7 +2,7 @@ import cl from '../styles/Form.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useAppDispatch } from '../hooks/redux.ts'
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 import { userAPI } from '../services/userService.ts'
@@ -58,15 +58,15 @@ const SignUp = () => {
     }
 
     return (
-        <div className={cl.signupContainer}>
+        <div className={cl.formContainer}>
             <h3 className={cl.title}>Create new account</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <div className={cl.formItem}>
                     <label className={cl.label}>Username</label>
                     <input
-                        type="text"
-                        placeholder="Username"
+                        type='text'
+                        placeholder='Username'
                         className={`${cl.input} ${errors.username ? cl.inputError : ''}`}
                         {...register('username')}
                     />
@@ -76,8 +76,8 @@ const SignUp = () => {
                 <div className={cl.formItem}>
                     <label className={cl.label}>Email address</label>
                     <input
-                        type="email"
-                        placeholder="Email address"
+                        type='email'
+                        placeholder='Email address'
                         className={`${cl.input} ${errors.email ? cl.inputError : ''}`}
                         {...register('email')}
                     />
@@ -87,8 +87,8 @@ const SignUp = () => {
                 <div className={cl.formItem}>
                     <label className={cl.label}>Password</label>
                     <input
-                        type="password"
-                        placeholder="Password"
+                        type='password'
+                        placeholder='Password'
                         className={`${cl.input} ${errors.password ? cl.inputError : ''}`}
                         {...register('password')}
                     />
@@ -98,8 +98,8 @@ const SignUp = () => {
                 <div className={cl.formItem}>
                     <label className={cl.label}>Repeat Password</label>
                     <input
-                        type="password"
-                        placeholder="Repeat Password"
+                        type='password'
+                        placeholder='Repeat Password'
                         className={`${cl.input} ${errors.confirmPassword ? cl.inputError : ''}`}
                         {...register('confirmPassword')}
                     />
@@ -127,7 +127,7 @@ const SignUp = () => {
             </form>
 
             <div className={cl.haveAccount}>
-                Already have an account? <Link to="/sign-in">Sign In</Link>
+                Already have an account? <Link to='/sign-in'>Sign In</Link>
             </div>
         </div>
     )

@@ -8,6 +8,14 @@
   margin: 0 auto;
 }
 
+body {
+  background-color: #EBEEF3;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  text-align: center;
+}
+
 img {
   object-fit: cover;
 }
@@ -25,12 +33,12 @@ ul {
   list-style: none;
 }
 
-body {
-  background-color: #EBEEF3;
-  font-family: 'Inter', sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  text-align: center;
+textarea {
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  color: #404040;
+  line-height: 21px;
+  resize: none;
 }
 
 .ant-pagination-item-active {
