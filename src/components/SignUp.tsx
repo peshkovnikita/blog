@@ -22,7 +22,7 @@ const schema = z.object({
     message: 'Passwords must match',
 })
 
-type FormTypes = z.infer<typeof schema>;
+type FormTypes = z.infer<typeof schema>
 
 const SignUp = () => {
     const { register, handleSubmit, setError, formState: { errors }} = useForm<FormTypes>({

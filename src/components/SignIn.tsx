@@ -13,7 +13,7 @@ const schema = z.object({
     password: z.string().min(6).max(40),
 })
 
-type FormTypes = z.infer<typeof schema>;
+type FormTypes = z.infer<typeof schema>
 
 const SignIn = () => {
     const { register, handleSubmit, setError, formState: { errors }} = useForm<FormTypes>({

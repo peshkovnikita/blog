@@ -44,7 +44,7 @@ const Profile = () => {
     const onSubmit = async (formData: FormTypes) => {
         const changedData = {image: null}
         for (const key in formData) {
-            if(formData[key] && formData[key] !== username && formData[key] !== email && formData[key] !== image) {
+            if(formData[key] && formData[key] !== username && formData[key] !== email) {
                 changedData[key] = formData[key]
             }
         }
@@ -72,7 +72,7 @@ const Profile = () => {
     }
 
     return (
-        <div className={cl.signupContainer}>
+        <div className={cl.formContainer}>
             <h3 className={cl.title}>Edit Profile</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
 

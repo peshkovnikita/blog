@@ -11,7 +11,7 @@ const schema = z.object({
     tag: z.string(),
 })
 
-type FormTypes = z.infer<typeof schema>;
+type FormTypes = z.infer<typeof schema>
 
 const CreateArticle = () => {
     const { register, handleSubmit, formState: { errors }} = useForm<FormTypes>({
