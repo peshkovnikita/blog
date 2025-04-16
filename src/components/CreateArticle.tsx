@@ -3,23 +3,52 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Button } from 'antd'
+import { ChangeEvent, useState, useEffect } from 'react'
 
 const schema = z.object({
-    title: z.string(),
-    description: z.string(),
-    text: z.string(),
-    tag: z.string(),
+    title: z.string().min(1, 'Title must be filled'),
+    description: z.string().min(1, 'Description must be filled'),
+    text: z.string().min(1, 'Article text must be filled'),
+    tags: z.string(),
 })
 
 type FormTypes = z.infer<typeof schema>
 
 const CreateArticle = () => {
-    const { register, handleSubmit, formState: { errors }} = useForm<FormTypes>({
+    const { register, handleSubmit, setValue, formState: { errors }} = useForm<FormTypes>({
         resolver: zodResolver(schema),
     })
 
-    const onSubmit = async (formData: FormTypes) => {
-        console.log(formData)
+    const [inputText, setInputText] = useState<string>('')
+    const [tagList, changeTagList] = useState<string[]>([])
+
+    const onTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setInputText(e.target.value)
+    }
+
+    useEffect(() => {
+        setValue('tags', [...tagList].pop())
+    }, [tagList])
+
+    const onSubmit = (formData: Omit<FormTypes, 'tags'>) => {
+        const fullData = {
+            ...formData,
+            tags: tagList
+        }
+        console.log(fullData)
+    }
+
+    const addTag = () => {
+        const tag = inputText.trim()
+
+        if(tag) {
+            changeTagList(prev => [...prev, tag])
+            setInputText('')
+        }
+    }
+
+    const deleteTag = (tagToRemove: string) => {
+        changeTagList(prev => prev.filter(value => value !== tagToRemove))
     }
 
     return (
@@ -62,20 +91,38 @@ const CreateArticle = () => {
 
                 <div className={cl.formItem}>
                     <label className={cl.label}>Tags</label>
-                    <input
-                        type='text'
-                        placeholder='Tag'
-                        className={`${cl.input} ${errors.tag ? cl.inputError : ''}`}
-                        style={{ width: 300 }}
-                        {...register('tag')}
-                    />
-                    <Button color='danger' variant='outlined' style={{ height: 40, marginLeft: 18, width: 120, fontSize: 16 }}>
-                        Delete
-                    </Button>
-                    <Button color='primary' variant='outlined' style={{ height: 40, marginLeft: 18, width: 136, fontSize: 16 }}>
-                        Add tag
-                    </Button>
-                    { errors.tag && <p className={cl.error}>{errors.tag.message}</p> }
+                    <ul>
+                        {tagList.map((tag, idx) => {
+                            return(
+                                <li key={idx+tag}>
+                                    <input type='text'
+                                           placeholder='Tag'
+                                           className={cl.input}
+                                           style={{ width: 300, marginBottom: 5 }}
+                                           defaultValue={tag}
+                                           readOnly
+                                    />
+                                    <Button
+                                        color='danger'
+                                        variant='outlined'
+                                        className={cl.tagBtn}
+                                        onClick={() => deleteTag(tag)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </li>
+                            )
+                        })}
+                        <li>
+                            <input type='text' placeholder='Tag' className={cl.input} style={{ width: 300 }} onChange={onTextChange} value={inputText} />
+                            {/*<Button color='danger' variant='outlined' className={cl.tagBtn} disabled={!tagList.length}>*/}
+                            {/*    Delete*/}
+                            {/*</Button>*/}
+                            <Button color='primary' variant='outlined' onClick={addTag} className={cl.tagBtn}>
+                                Add tag
+                            </Button>
+                        </li>
+                    </ul>
                 </div>
 
                 <div className={cl.formItem} style={{ marginBottom: 0, width: 319 }}>
