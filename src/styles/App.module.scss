@@ -131,6 +131,7 @@ header {
 
 .author-info {
     display: flex;
+    flex-direction: column;
     height: 46px;
 
     div {

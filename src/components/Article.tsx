@@ -11,6 +11,8 @@ const Article = ({ slug, title, description, tagList, author, createdAt, favorit
         tagList.map((tag, index) => <li key={index}>{tag}</li>)
         : null
 
+    let isNotLogin = !(localStorage.getItem('token'))
+
     return (
             <li className={cl.articleItem}>
                 <div className={cl.articleData}>
@@ -18,7 +20,7 @@ const Article = ({ slug, title, description, tagList, author, createdAt, favorit
                         <Link to={`/articles/${slug}`}>
                             <h3>{title}</h3>
                         </Link>
-                        <Rate disabled character={ favorited ?
+                        <Rate disabled={ isNotLogin } character={ favorited ?
                             <HeartFilled style={{ color: '#FF0707' }}/> :
                             <HeartOutlined style={{ color: '#404040' }} />
                         } style={{ marginRight: '6px', alignContent: 'center' }} count={1} />
@@ -32,11 +34,14 @@ const Article = ({ slug, title, description, tagList, author, createdAt, favorit
                     </p>
                 </div>
                 <div className={cl.authorInfo}>
-                    <div>
-                        <span className={cl.username}>{ author.username }</span>
-                        <span className={cl.date}>{ format(parseISO(createdAt), 'MMMM d, yyyy') }</span>
+                    <div style={{ display: 'flex' }}>
+                        <div>
+                            <span className={cl.username}>{ author.username }</span>
+                            <span className={cl.date}>{ format(parseISO(createdAt), 'MMMM d, yyyy') }</span>
+                        </div>
+                        <img src={author.image} alt='avatar'/>
                     </div>
-                    <img src={author.image} alt='avatar'/>
+
                 </div>
             </li>
     )

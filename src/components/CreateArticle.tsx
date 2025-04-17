@@ -4,11 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Button } from 'antd'
 import { ChangeEvent, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { articleAPI } from '../services/articleService.ts'
 
 const schema = z.object({
     title: z.string().min(1, 'Title must be filled'),
     description: z.string().min(1, 'Description must be filled'),
-    text: z.string().min(1, 'Article text must be filled'),
+    body: z.string().min(1, 'Article text must be filled'),
     tags: z.string(),
 })
 
@@ -22,20 +24,26 @@ const CreateArticle = () => {
     const [inputText, setInputText] = useState<string>('')
     const [tagList, changeTagList] = useState<string[]>([])
 
-    const onTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputText(e.target.value)
-    }
+    const navigate = useNavigate()
+    const [ postArticle ] = articleAPI.usePostArticleMutation()
 
     useEffect(() => {
         setValue('tags', [...tagList].pop())
     }, [tagList])
 
-    const onSubmit = (formData: Omit<FormTypes, 'tags'>) => {
-        const fullData = {
-            ...formData,
-            tags: tagList
+    const onSubmit = async (formData: Omit<FormTypes, 'tags'>) => {
+        const fullData = { ...formData, tagList }
+        try {
+            await postArticle({article: {...fullData}}).unwrap()
+            navigate('/')
         }
-        console.log(fullData)
+        catch (error) {
+            console.error(error)
+        }
+    }
+
+    const onTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setInputText(e.target.value)
     }
 
     const addTag = () => {
@@ -82,11 +90,11 @@ const CreateArticle = () => {
                     <label className={cl.label}>Text</label>
                     <textarea
                         placeholder='Text'
-                        className={`${cl.input} ${errors.text ? cl.inputError : ''}`}
+                        className={`${cl.input} ${errors.body ? cl.inputError : ''}`}
                         style={{ height: 168, fontSize: 16 }}
-                        {...register('text')}
+                        {...register('body')}
                     />
-                    { errors.text && <p className={cl.error}>{errors.text.message}</p> }
+                    { errors.body && <p className={cl.error}>{errors.body.message}</p> }
                 </div>
 
                 <div className={cl.formItem}>

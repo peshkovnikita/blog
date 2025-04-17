@@ -8,6 +8,7 @@ import SignUp from './components/SignUp.tsx'
 import SignIn from './components/SignIn.tsx'
 import Profile from './components/Profile.tsx'
 import CreateArticle from './components/CreateArticle.tsx'
+import EditArticle from './components/EditArticle.tsx'
 import { useAppDispatch } from './hooks/redux.ts'
 import { setTokenFromStorage } from './store/reducers/AuthSlice.ts'
 
@@ -30,6 +31,7 @@ function App() {
                 <Route path='/sign-in' exact element={<SignIn />} />
                 <Route path='/profile' exact element={<Profile />} />
                 <Route path='/new-article' exact element={<CreateArticle />} />
+                <Route path='/articles/:slug/edit' exact element={<EditArticle />} />
             </Routes>
         </>
     )

@@ -22,5 +22,18 @@ export const articleAPI = createApi({
                 url: `/articles/${slug}`,
             }),
         }),
+        postArticle: build.mutation({
+            query: (article) => ({
+                url: '/articles',
+                method: 'POST',
+                body: article,
+            }),
+        }),
+        deleteArticle: build.mutation({
+            query: (slug) => ({
+                url: `/articles/${slug}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });

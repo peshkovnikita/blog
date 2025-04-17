@@ -1,19 +1,37 @@
-import cl from "../styles/App.module.scss"
-import { Rate } from "antd"
-import { HeartFilled, HeartOutlined } from "@ant-design/icons"
+import cl from '../styles/App.module.scss'
+import { Rate, Button } from 'antd'
+import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 
-import { articleAPI } from "../services/articleService.ts"
+import { articleAPI } from '../services/articleService.ts'
 import { useParams } from 'react-router'
-import { format, parseISO } from "date-fns"
-import ReactMarkdown from 'react-markdown';
+import { format, parseISO } from 'date-fns'
+import ReactMarkdown from 'react-markdown'
+import { useAppSelector } from '../hooks/redux.ts'
+import { useNavigate } from "react-router-dom";
 
 const ArticlePage = () => {
     const { slug } = useParams()
 
     const { data } = articleAPI.useGetArticleQuery(slug)
+    const { username } = useAppSelector((state) => state.auth)
+
+    const navigate = useNavigate()
+    const [ deleteArticle ] = articleAPI.useDeleteArticleMutation()
+
+    const onDeleteArticle = async (articleSlug) => {
+        try {
+            await deleteArticle(articleSlug).unwrap()
+            navigate('/')
+        }
+        catch (error) {
+            console.error(error.message)
+        }
+    }
+
+    const onEditArticle = () => navigate(`/articles/${slug}/edit`)
 
     if(data) {
-        const { title, body, description, tagList, author, createdAt, favorited, favoritesCount } = data?.article
+        const { slug: articleSlug, title, body, description, tagList, author, createdAt, favorited, favoritesCount } = data?.article
 
         const tags = tagList.length ?
             tagList.map((tag, index) => <li key={index}>{tag}</li>)
@@ -39,11 +57,25 @@ const ArticlePage = () => {
                     </div>
                 </div>
                 <div className={cl.authorInfo}>
-                    <div>
-                        <span className={cl.username}>{ author.username }</span>
-                        <span className={cl.date}>{ format(parseISO(createdAt), 'MMMM d, yyyy') }</span>
+                    <div style={{ display: 'flex' }}>
+                        <div>
+                            <span className={cl.username}>{ author.username }</span>
+                            <span className={cl.date}>{ format(parseISO(createdAt), 'MMMM d, yyyy') }</span>
+                        </div>
+                        <img src={author.image} alt='avatar'/>
                     </div>
-                    <img src={author.image} alt='avatar'/>
+                    {
+                        author.username === username ?
+                            <div style={{ marginTop: 30 }} >
+                                <Button onClick={() => onDeleteArticle(articleSlug)} variant='outlined' color='danger' size='large' style={{ marginRight: 12 }} >
+                                    Delete
+                                </Button>
+                                <Button onClick={onEditArticle} variant='outlined' color='green' size='large'>
+                                    Edit
+                                </Button>
+                            </div> :
+                            null
+                    }
                 </div>
             </div>
         )
