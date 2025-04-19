@@ -4,7 +4,7 @@ import { format, parseISO } from 'date-fns'
 
 import { Rate } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
-import {useAppSelector} from "../hooks/redux.ts";
+import { useAppSelector } from '../hooks/redux.ts'
 
 const Article = ({ slug, title, description, tagList, author, createdAt, favorited, favoritesCount }) => {
 

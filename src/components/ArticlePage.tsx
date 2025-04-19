@@ -1,5 +1,6 @@
 import cl from '../styles/App.module.scss'
-import { Rate, Button } from 'antd'
+import { Rate, Button, Popconfirm } from 'antd'
+import type { PopconfirmProps } from 'antd'
 import { HeartFilled, HeartOutlined } from '@ant-design/icons'
 
 import { articleAPI } from '../services/articleService.ts'
@@ -7,7 +8,7 @@ import { useParams } from 'react-router'
 import { format, parseISO } from 'date-fns'
 import ReactMarkdown from 'react-markdown'
 import { useAppSelector } from '../hooks/redux.ts'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 const ArticlePage = () => {
     const { slug } = useParams()
@@ -30,8 +31,10 @@ const ArticlePage = () => {
 
     const onEditArticle = () => navigate(`/articles/${slug}/edit`)
 
+    const confirm: PopconfirmProps['onConfirm'] = () => onDeleteArticle(slug)
+
     if(data) {
-        const { slug: articleSlug, title, body, description, tagList, author, createdAt, favorited, favoritesCount } = data?.article
+        const { title, body, description, tagList, author, createdAt, favorited, favoritesCount } = data?.article
 
         const tags = tagList.length ?
             tagList.map((tag, index) => <li key={index}>{tag}</li>)
@@ -67,9 +70,11 @@ const ArticlePage = () => {
                     {
                         author.username === username ?
                             <div style={{ marginTop: 30 }} >
-                                <Button onClick={() => onDeleteArticle(articleSlug)} variant='outlined' color='danger' size='large' style={{ marginRight: 12 }} >
-                                    Delete
-                                </Button>
+                                <Popconfirm title='Delete article' onConfirm={confirm} description='Are you sure to delete this article?' okText='Yes' cancelText='No' >
+                                    <Button variant='outlined' color='danger' size='large' style={{ marginRight: 12 }} >
+                                        Delete
+                                    </Button>
+                                </Popconfirm>
                                 <Button onClick={onEditArticle} variant='outlined' color='green' size='large'>
                                     Edit
                                 </Button>

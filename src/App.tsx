@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 import Header from './components/Header.tsx'
 import ArticleList from './components/ArticleList.tsx'
@@ -24,7 +24,6 @@ function App() {
         <>
             <Header />
             <Routes>
-                {/*<Route path='/' element={<Navigate to='/articles' replace />} />*/}
                 <Route path='/' exact element={<ArticleList />} />
                 <Route path='/articles/:slug' element={<ArticlePage />} />
                 <Route path='/sign-up' exact element={<SignUp />} />
