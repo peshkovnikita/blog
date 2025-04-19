@@ -11,7 +11,7 @@ const schema = z.object({
     title: z.string().min(1, 'Title must be filled'),
     description: z.string().min(1, 'Description must be filled'),
     body: z.string().min(1, 'Article text must be filled'),
-    tags: z.string().optional(),
+    tags: z.string(),
 })
 
 type FormTypes = z.infer<typeof schema>
@@ -60,7 +60,7 @@ const CreateArticle = () => {
     }
 
     return (
-        <div className={cl.formContainer} style={{ width: 938 }}>
+        <div className={cl.formContainer} style={{ width: 938, marginTop: 0 }}>
             <h3 className={cl.title}>Create new article</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
 

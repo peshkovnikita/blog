@@ -29,6 +29,13 @@ export const articleAPI = createApi({
                 body: article,
             }),
         }),
+        updateArticle: build.mutation({
+            query: ({article, slug}) => ({
+                url: `/articles/${slug}`,
+                method: 'PUT',
+                body: article,
+            }),
+        }),
         deleteArticle: build.mutation({
             query: (slug) => ({
                 url: `/articles/${slug}`,

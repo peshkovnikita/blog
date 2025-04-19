@@ -34,7 +34,7 @@ const Header = () => {
                         <ConfigProvider componentSize={xxl ? 'large' : 'middle'} >
                             <Flex gap='large' style={{ display: 'flex', alignItems: 'center' }}>
                                 <Link to='/new-article'>
-                                    <Button variant='outlined' color='green'>Create article</Button>
+                                    <Button variant='outlined' color='green' size='medium'>Create article</Button>
                                 </Link>
                                 <Link to='/profile'>
                                     <div className={cl.profileWrapper}>
@@ -43,7 +43,7 @@ const Header = () => {
                                     </div>
                                 </Link>
                                 <Link to='/' >
-                                    <Button type='small' variant='outlined' color='default' onClick={onLogout}>
+                                    <Button variant='outlined' color='default' size='large' onClick={onLogout}>
                                         Log Out
                                     </Button>
                                 </Link>

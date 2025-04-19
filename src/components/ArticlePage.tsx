@@ -13,7 +13,11 @@ import { useNavigate } from 'react-router-dom'
 const ArticlePage = () => {
     const { slug } = useParams()
 
-    const { data } = articleAPI.useGetArticleQuery(slug)
+    const { data } = articleAPI.useGetArticleQuery(
+        slug,
+        { refetchOnMountOrArgChange: true }
+    )
+
     const { username, image } = useAppSelector(state => state.auth)
 
     const navigate = useNavigate()
