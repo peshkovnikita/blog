@@ -13,7 +13,7 @@ const ArticlePage = () => {
     const { slug } = useParams()
 
     const { data } = articleAPI.useGetArticleQuery(slug)
-    const { username } = useAppSelector((state) => state.auth)
+    const { username, image } = useAppSelector(state => state.auth)
 
     const navigate = useNavigate()
     const [ deleteArticle ] = articleAPI.useDeleteArticleMutation()
@@ -62,7 +62,7 @@ const ArticlePage = () => {
                             <span className={cl.username}>{ author.username }</span>
                             <span className={cl.date}>{ format(parseISO(createdAt), 'MMMM d, yyyy') }</span>
                         </div>
-                        <img src={author.image} alt='avatar'/>
+                        <img src={ author.username === username ? image : author.image } alt='avatar'/>
                     </div>
                     {
                         author.username === username ?

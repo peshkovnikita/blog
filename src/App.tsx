@@ -24,8 +24,8 @@ function App() {
         <>
             <Header />
             <Routes>
-                <Route path='/' element={<Navigate to='/articles' replace />} />
-                <Route path='/articles' exact element={<ArticleList />} />
+                {/*<Route path='/' element={<Navigate to='/articles' replace />} />*/}
+                <Route path='/' exact element={<ArticleList />} />
                 <Route path='/articles/:slug' element={<ArticlePage />} />
                 <Route path='/sign-up' exact element={<SignUp />} />
                 <Route path='/sign-in' exact element={<SignIn />} />

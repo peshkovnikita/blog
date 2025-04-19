@@ -24,7 +24,7 @@ const authSlice = createSlice({
             state.token = action.payload.token
             state.username = action.payload.username
             state.email = action.payload.email
-            state.image = action.payload.image ?? imgPlug
+            state.image = action.payload.image ? action.payload.image : imgPlug
             localStorage.setItem('token', action.payload.token);
         },
         setTokenFromStorage: (state: AuthState, action: PayloadAction<string>) => {

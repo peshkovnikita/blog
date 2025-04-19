@@ -42,9 +42,9 @@ const Profile = () => {
     }, [username, email, image])
 
     const onSubmit = async (formData: FormTypes) => {
-        const changedData = {image: null}
+        const changedData = {image: ''}
         for (const key in formData) {
-            if(formData[key] && formData[key] !== username && formData[key] !== email) {
+            if(formData[key] && formData[key] !== username && formData[key] !== email && formData[key] !== image) {
                 changedData[key] = formData[key]
             }
         }

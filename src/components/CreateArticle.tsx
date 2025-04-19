@@ -11,7 +11,7 @@ const schema = z.object({
     title: z.string().min(1, 'Title must be filled'),
     description: z.string().min(1, 'Description must be filled'),
     body: z.string().min(1, 'Article text must be filled'),
-    tags: z.string(),
+    tags: z.string().optional(),
 })
 
 type FormTypes = z.infer<typeof schema>

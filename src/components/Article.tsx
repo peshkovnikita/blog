@@ -4,8 +4,11 @@ import { format, parseISO } from 'date-fns'
 
 import { Rate } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
+import {useAppSelector} from "../hooks/redux.ts";
 
 const Article = ({ slug, title, description, tagList, author, createdAt, favorited, favoritesCount }) => {
+
+    const { username, image } = useAppSelector(state => state.auth)
 
     const tags = tagList.length ?
         tagList.map((tag, index) => <li key={index}>{tag}</li>)
@@ -39,7 +42,7 @@ const Article = ({ slug, title, description, tagList, author, createdAt, favorit
                             <span className={cl.username}>{ author.username }</span>
                             <span className={cl.date}>{ format(parseISO(createdAt), 'MMMM d, yyyy') }</span>
                         </div>
-                        <img src={author.image} alt='avatar'/>
+                        <img src={ author.username === username ? image : author.image } alt='avatar'/>
                     </div>
 
                 </div>
