@@ -18,7 +18,7 @@ const ArticlePage = () => {
         { refetchOnMountOrArgChange: true }
     )
 
-    const { username, image } = useAppSelector(state => state.auth)
+    const { token, username, image } = useAppSelector(state => state.auth)
 
     const navigate = useNavigate()
     const [ deleteArticle ] = articleAPI.useDeleteArticleMutation()
@@ -44,12 +44,14 @@ const ArticlePage = () => {
             tagList.map((tag, index) => <li key={index}>{tag}</li>)
             : null
 
+        let isNotLogin = !token
+
         return(
             <div className={cl.articlePage}>
                 <div className={cl.articleData}>
                     <div className={cl.articleTitle}>
                         <h3>{title}</h3>
-                        <Rate disabled character={ favorited ?
+                        <Rate disabled={ isNotLogin } character={ favorited ?
                             <HeartFilled style={{ color: '#FF0707' }}/> :
                             <HeartOutlined style={{ color: '#404040' }} />
                         } style={{ marginRight: '6px', alignContent: 'center' }} count={1} />

@@ -8,13 +8,13 @@ import { useAppSelector } from '../hooks/redux.ts'
 
 const Article = ({ slug, title, description, tagList, author, createdAt, favorited, favoritesCount }) => {
 
-    const { username, image } = useAppSelector(state => state.auth)
+    const { token, username, image } = useAppSelector(state => state.auth)
 
     const tags = tagList.length ?
         tagList.map((tag, index) => <li key={index}>{tag}</li>)
         : null
 
-    let isNotLogin = !(localStorage.getItem('token'))
+    let isNotLogin = !token
 
     return (
             <li className={cl.articleItem}>
