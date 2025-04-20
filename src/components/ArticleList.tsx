@@ -17,18 +17,18 @@ const ArticleList = () => {
     const limit = 5
     const offset = (currentPage - 1) * limit
 
-    const { data, isLoading, isError } = articleAPI.useFetchAllArticlesQuery(
+    const { data, isLoading, isError, refetch } = articleAPI.useFetchAllArticlesQuery(
         { limit, offset },
         { refetchOnMountOrArgChange: true }
     )
 
+    const allArticles = data?.articles.map((article) => (
+        <Article key={article.slug} {...article} onRefetch={refetch}/>
+    ))
+
     useEffect(() => {
         if(data) dispatch(setArticlesCount(data.articlesCount))
-    }, [data]);
-
-    const allArticles = data?.articles.map((article) => (
-        <Article key={article.slug} {...article} />
-    ))
+    }, [data])
 
     return(
         <>

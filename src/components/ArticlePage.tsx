@@ -9,16 +9,23 @@ import { format, parseISO } from 'date-fns'
 import ReactMarkdown from 'react-markdown'
 import { useAppSelector } from '../hooks/redux.ts'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const ArticlePage = () => {
     const { slug } = useParams()
 
-    const { data } = articleAPI.useGetArticleQuery(
+    const { data, refetch } = articleAPI.useGetArticleQuery(
         slug,
         { refetchOnMountOrArgChange: true }
     )
 
     const { token, username, image } = useAppSelector(state => state.auth)
+
+    const [ favoriteArticle, favoriteRes ] = articleAPI.useFavoriteArticleMutation()
+    const [ unfavoriteArticle, unfavoriteRes ] = articleAPI.useUnfavoriteArticleMutation()
+
+    const onFavorite = () => favoriteArticle(slug)
+    const onUnfavorite = () => unfavoriteArticle(slug)
 
     const navigate = useNavigate()
     const [ deleteArticle ] = articleAPI.useDeleteArticleMutation()
@@ -37,6 +44,10 @@ const ArticlePage = () => {
 
     const confirm: PopconfirmProps['onConfirm'] = () => onDeleteArticle(slug)
 
+    useEffect(() => {
+        refetch()
+    }, [favoriteRes?.data?.article?.favorited, unfavoriteRes?.data?.article?.favorited])
+
     if(data) {
         const { title, body, description, tagList, author, createdAt, favorited, favoritesCount } = data?.article
 
@@ -51,10 +62,16 @@ const ArticlePage = () => {
                 <div className={cl.articleData}>
                     <div className={cl.articleTitle}>
                         <h3>{title}</h3>
-                        <Rate disabled={ isNotLogin } character={ favorited ?
-                            <HeartFilled style={{ color: '#FF0707' }}/> :
-                            <HeartOutlined style={{ color: '#404040' }} />
-                        } style={{ marginRight: '6px', alignContent: 'center' }} count={1} />
+                        <Rate
+                            disabled={ isNotLogin }
+                            character={ favorited ?
+                                <HeartFilled style={{ color: '#FF0707' }}/> :
+                                <HeartOutlined style={{ color: '#404040' }} />
+                            }
+                            onChange={favorited ? onUnfavorite : onFavorite}
+                            style={{ marginRight: '6px', alignContent: 'center' }}
+                            count={1}
+                        />
                         <span>{ favoritesCount }</span>
                     </div>
                     <ul className={cl.tagList}>{ tags }</ul>
